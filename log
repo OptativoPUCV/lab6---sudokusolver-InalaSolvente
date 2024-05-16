@@ -8,3 +8,45 @@ Thu 16 May 2024 03:43:09 PM UTC:
  tests:  2|4
 total_score: 15/70
 f007b75
+Thu 16 May 2024 03:46:13 PM UTC: 
+ sudoku.c | 75 ++++++++++++++++++++++++++++++----------------------------------
+ 1 file changed, 35 insertions(+), 40 deletions(-)
+test.c: In function ‘test_isvalid’:
+test.c:112:9: error: too few arguments to function ‘is_valid’
+  112 |     if(!is_valid(initial)){
+      |         ^~~~~~~~
+In file included from test.c:5:
+sudoku.c:45:5: note: declared here
+   45 | int is_valid(Node* n, int row, int col, int num) {
+      |     ^~~~~~~~
+test.c:120:8: error: too few arguments to function ‘is_valid’
+  120 |     if(is_valid(initial)){
+      |        ^~~~~~~~
+In file included from test.c:5:
+sudoku.c:45:5: note: declared here
+   45 | int is_valid(Node* n, int row, int col, int num) {
+      |     ^~~~~~~~
+test.c:131:8: error: too few arguments to function ‘is_valid’
+  131 |     if(is_valid(initial)){
+      |        ^~~~~~~~
+In file included from test.c:5:
+sudoku.c:45:5: note: declared here
+   45 | int is_valid(Node* n, int row, int col, int num) {
+      |     ^~~~~~~~
+test.c:141:8: error: too few arguments to function ‘is_valid’
+  141 |     if(is_valid(initial)){
+      |        ^~~~~~~~
+In file included from test.c:5:
+sudoku.c:45:5: note: declared here
+   45 | int is_valid(Node* n, int row, int col, int num) {
+      |     ^~~~~~~~
+test.c: In function ‘test_dfs’:
+test.c:213:9: error: too few arguments to function ‘is_valid’
+  213 |     if(!is_valid(final)){
+      |         ^~~~~~~~
+In file included from test.c:5:
+sudoku.c:45:5: note: declared here
+   45 | int is_valid(Node* n, int row, int col, int num) {
+      |     ^~~~~~~~
+Compilation failed
+7d86fe0
