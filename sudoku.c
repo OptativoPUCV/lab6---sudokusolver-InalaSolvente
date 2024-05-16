@@ -106,13 +106,14 @@ List *get_adj_nodes(Node *n) {
                         free(new_node); // Liberar la memoria del nuevo nodo si no es válido
                     }
                 }
-                break; // No necesitamos seguir probando números en esta celda
+                return adj_nodes; // Salir de la función después de procesar la celda vacía
             }
         }
     }
 
     return adj_nodes;
 }
+
 
 
 int is_final(Node *n) { return 0; }
