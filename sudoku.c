@@ -42,34 +42,53 @@ void print_node(Node *n) {
   printf("\n");
 }
 
-int is_valid(Node* n, int row, int col, int num) {
-    // Verificar si el número ya está en la misma fila
-    for (int i = 0; i < 9; i++) {
-        if (n->sudo[row][i] == num) {
-            return 0; // No es una jugada válida
+int is_valid(Node *n) {
+  // Verificar filas y columnas
+  for (int i = 0; i < 9; i++) {
+    int row_check[10] = {0}; // Inicializar un arreglo para verificar filas
+    int col_check[10] = {0}; // Inicializar un arreglo para verificar columnas
+    for (int j = 0; j < 9; j++) {
+      // Verificar filas
+      if (n->sudo[i][j] != 0) {
+        if (row_check[n->sudo[i][j]] == 1) {
+          return 0; // Si el número ya aparece en la fila, no es válido
+        } else {
+          row_check[n->sudo[i][j]] = 1; // Marcar el número como visto
         }
-    }
-
-    // Verificar si el número ya está en la misma columna
-    for (int i = 0; i < 9; i++) {
-        if (n->sudo[i][col] == num) {
-            return 0; // No es una jugada válida
+      }
+      // Verificar columnas
+      if (n->sudo[j][i] != 0) {
+        if (col_check[n->sudo[j][i]] == 1) {
+          return 0; // Si el número ya aparece en la columna, no es válido
+        } else {
+          col_check[n->sudo[j][i]] = 1; // Marcar el número como visto
         }
+      }
     }
+  }
 
-    // Verificar si el número ya está en el mismo cuadrante 3x3
-    int startRow = row - row % 3;
-    int startCol = col - col % 3;
-    for (int i = startRow; i < startRow + 3; i++) {
-        for (int j = startCol; j < startCol + 3; j++) {
-            if (n->sudo[i][j] == num) {
-                return 0; // No es una jugada válida
+  // Verificar cuadrantes 3x3
+  for (int i = 0; i < 9; i += 3) {
+    for (int j = 0; j < 9; j += 3) {
+      int quad_check[10] = {
+          0}; // Inicializar un arreglo para verificar cuadrantes
+      for (int k = i; k < i + 3; k++) {
+        for (int l = j; l < j + 3; l++) {
+          // Verificar el cuadrante
+          if (n->sudo[k][l] != 0) {
+            if (quad_check[n->sudo[k][l]] == 1) {
+              return 0; // Si el número ya aparece en el cuadrante, no es válido
+            } else {
+              quad_check[n->sudo[k][l]] = 1; // Marcar el número como visto
             }
+          }
         }
+      }
     }
+  }
 
-    // Si no se encontró el número en la fila, columna o cuadrante, entonces es una jugada válida
-    return 1;
+  // Si pasó todas las verificaciones, la configuración es válida
+  return 1;
 }
 
 List *get_adj_nodes(Node *n) {
@@ -79,17 +98,14 @@ List *get_adj_nodes(Node *n) {
     for (int j = 0; j < 9; j++) {
       if (n->sudo[i][j] == 0) {
         for (int num = 1; num <= 9; num++) {
-
-          if (is_valid(n, i, j, num)) {
-
+          n->sudo[i][j] = num; // Asignar un número a la celda
+          if (is_valid(n)) {   // Verificar si el tablero sigue siendo válido
             Node *new_node = copy(n);
-
-            new_node->sudo[i][j] = num;
-
             pushBack(adj_nodes, new_node);
           }
         }
-        break;
+        n->sudo[i][j] = 0; // Restaurar la celda a su estado original (vacía)
+        break; // No necesitamos seguir probando números en esta celda
       }
     }
   }
