@@ -92,26 +92,28 @@ int is_valid(Node *n) {
 }
 
 List *get_adj_nodes(Node *n) {
-  List *adj_nodes = createList();
+    List *adj_nodes = createList();
 
-  for (int i = 0; i < 9; i++) {
-    for (int j = 0; j < 9; j++) {
-      if (n->sudo[i][j] == 0) {
-        for (int num = 1; num <= 9; num++) {
-          n->sudo[i][j] = num; // Asignar un número a la celda
-          if (is_valid(n)) {   // Verificar si el tablero sigue siendo válido
-            Node *new_node = copy(n);
-            pushBack(adj_nodes, new_node);
-          }
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            if (n->sudo[i][j] == 0) {
+                for (int num = 1; num <= 9; num++) {
+                    Node *new_node = copy(n); // Realizar una copia del nodo original
+                    new_node->sudo[i][j] = num; // Asignar un número a la celda
+                    if (is_valid(new_node)) { // Verificar si el tablero resultante es válido
+                        pushBack(adj_nodes, new_node); // Agregar el nuevo nodo a la lista de adyacentes
+                    } else {
+                        free(new_node); // Liberar la memoria del nuevo nodo si no es válido
+                    }
+                }
+                break; // No necesitamos seguir probando números en esta celda
+            }
         }
-        n->sudo[i][j] = 0; // Restaurar la celda a su estado original (vacía)
-        break; // No necesitamos seguir probando números en esta celda
-      }
     }
-  }
 
-  return adj_nodes;
+    return adj_nodes;
 }
+
 
 int is_final(Node *n) { return 0; }
 
